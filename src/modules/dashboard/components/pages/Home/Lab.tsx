@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { ArrowLeft, Search } from "lucide-react"
+import { ArrowLeft, Plus, Search } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -118,18 +118,29 @@ export default function LabPage({
   return (
     <section className={cn("flex flex-col gap-6", className)}>
       <header className="flex flex-col gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => router.back()}
+              aria-label="Go back"
+              className="h-10 w-10 rounded-lg border-[#DADBF7] text-[#29196E] shadow-[0_10px_30px_-24px_rgba(9,84,235,0.5)] hover:bg-[#EEF2FF]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-2xl font-semibold text-[#29196E]">Lab</h1>
+          </div>
+
           <Button
             type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => router.back()}
-            aria-label="Go back"
-            className="h-10 w-10 rounded-lg border-[#DADBF7] text-[#29196E] shadow-[0_10px_30px_-24px_rgba(9,84,235,0.5)] hover:bg-[#EEF2FF]"
+            onClick={() => router.push("/dashboard/labs/create")}
+            className="h-10 rounded-lg bg-[#0954EB] px-4 text-sm font-medium text-white shadow-[0_18px_40px_-30px_rgba(89,23,234,0.9)] transition hover:bg-[#3A0FC5]"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <Plus className="mr-1.5 h-4 w-4" />
+            Create Lab
           </Button>
-          <h1 className="text-2xl font-semibold text-[#29196E]">Lab</h1>
         </div>
 
         <div className="flex w-full flex-wrap items-center gap-3">
