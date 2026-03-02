@@ -11,7 +11,7 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden h-[650px] w-[260px] flex-col border border-slate-100 bg-white px-5 py-8 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.45)] lg:flex">
+    <aside className="hidden h-full w-[260px] flex-col border border-slate-100 bg-white px-5 py-8 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.45)] lg:flex">
       <nav className="flex flex-1 flex-col gap-5">
         {sidebarNavItems.map(({ id, href, label, icon: Icon }) => {
           const isActive = pathname === href

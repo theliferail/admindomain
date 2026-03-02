@@ -45,7 +45,8 @@ export async function createPharmacy(payload: CreatePharmacyPayload) {
 
     return data;
   } catch (error) {
-    const axiosError = error as AxiosError<{ message?: string }>;
+    const axiosError = error as AxiosError<{ message?: string; errors?: Record<string, string[]> }>;
+
     const message =
       axiosError.response?.data?.message ??
       axiosError.response?.statusText ??
