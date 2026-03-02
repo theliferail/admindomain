@@ -27,16 +27,16 @@ interface TaskCardProps {
 
 function TaskCard({ item, onView, onDone }: TaskCardProps) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-[#ECECFE] bg-white px-5 py-4 shadow-sm">
+    <div className="flex items-center justify-between rounded-lg border border-[#ECECFE] bg-[#F0F1F5] px-5 py-4 shadow-sm">
       <div className="flex flex-col gap-0.5">
         <span className="text-sm font-medium text-[#2B2F4A]">{item.name}</span>
         <span className="text-xs text-[#7A819F]">{item.code}</span>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col items-end gap-1.5">
         <button
           type="button"
           onClick={onView}
-          className="text-sm font-medium text-[#0954EB] transition hover:text-[#3A0FC5]"
+          className="px-3 py-1 text-xs font-medium text-[#0954EB] transition hover:text-[#3A0FC5]"
         >
           View
         </button>

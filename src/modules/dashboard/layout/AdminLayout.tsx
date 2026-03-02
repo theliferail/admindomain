@@ -47,7 +47,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-[#f5f6fb] pb-20 lg:pb-0">
+    <div className="flex min-h-screen w-full flex-col bg-[#FFFFFF] pb-20 lg:pb-0">
       <div className="sticky top-0 z-50 hidden bg-white shadow-sm lg:block">
         <Header />
       </div>
