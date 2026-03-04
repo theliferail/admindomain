@@ -230,10 +230,7 @@ export default function Header() {
         <button
           type="button"
           aria-label="Filter"
-          onClick={() => {
-            setOpen(!open)
-            loadData()
-          }}
+          onClick={() => setShowFilter(!showFilter)}
           className="hidden h-10 w-10 items-center justify-center rounded-full transition hover:bg-primary/5 focus-visible:ring-2 focus-visible:ring-primary/30 sm:flex sm:pr-6"
         >
           <Image src={filterIcon} alt="" className="h-5 w-5" />
