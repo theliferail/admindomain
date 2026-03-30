@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 
 import AdminLayout from "@modules/dashboard/layout/AdminLayout"
-import Doctors, { type Doctor } from "@modules/dashboard/components/pages/Doctors"
+import Doctors, { type Doctor } from "@modules/dashboard/components/pages/Home/Doctors"
 import { fetchTotalUsers } from "@/actions/users/totalusers"
 import { fetchUsersByStatus } from "@/actions/users/usersbystatus"
 
