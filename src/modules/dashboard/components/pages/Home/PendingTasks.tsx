@@ -1,103 +1,28 @@
 "use client"
 
+import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 import { Button } from "@shared/components/ui/button"
+import { Card } from "@shared/components/ui/card"
 import { cn } from "@shared/lib/utils"
 
-export interface TaskItem {
-  id: string
-  name: string
-  code: string
+export interface PendingTaskCategory {
+  title: string
+  href: string
 }
 
 export interface PendingTasksPageProps {
-  patientsWaiting?: TaskItem[]
-  cancelledRefunds?: TaskItem[]
-  reports?: TaskItem[]
+  categories: PendingTaskCategory[]
   className?: string
 }
 
-interface TaskCardProps {
-  item: TaskItem
-  onView?: () => void
-  onDone?: () => void
-}
-
-function TaskCard({ item, onView, onDone }: TaskCardProps) {
-  return (
-    <div className="flex items-center justify-between rounded-lg border border-[#ECECFE] bg-[#F0F1F5] px-5 py-4 shadow-sm">
-      <div className="flex flex-col gap-0.5">
-        <span className="text-sm font-medium text-[#2B2F4A]">{item.name}</span>
-        <span className="text-xs text-[#7A819F]">{item.code}</span>
-      </div>
-      <div className="flex flex-col items-end gap-1.5">
-        <button
-          type="button"
-          onClick={onView}
-          className="px-3 py-1 text-xs font-medium text-[#0954EB] transition hover:text-[#3A0FC5]"
-        >
-          View
-        </button>
-        <button
-          type="button"
-          onClick={onDone}
-          className="rounded border border-[#22C55E] px-3 py-1 text-xs font-medium text-[#22C55E] transition hover:bg-[#22C55E] hover:text-white"
-        >
-          Done
-        </button>
-      </div>
-    </div>
-  )
-}
-
-interface TaskSectionProps {
-  title: string
-  items: TaskItem[]
-  onView?: (item: TaskItem) => void
-  onDone?: (item: TaskItem) => void
-}
-
-function TaskSection({ title, items, onView, onDone }: TaskSectionProps) {
-  return (
-    <div className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold text-[#2B2F4A]">{title}</h3>
-      {items.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-[#DADBF7] bg-white py-8 text-center text-sm text-[#7A819F]">
-          No items found.
-        </div>
-      ) : (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {items.map((item) => (
-            <TaskCard
-              key={item.id}
-              item={item}
-              onView={() => onView?.(item)}
-              onDone={() => onDone?.(item)}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
 export default function PendingTasksPage({
-  patientsWaiting = [],
-  cancelledRefunds = [],
-  reports = [],
+  categories,
   className,
 }: PendingTasksPageProps) {
   const router = useRouter()
-
-  function handleView(item: TaskItem) {
-    console.log("View task:", item)
-  }
-
-  function handleDone(item: TaskItem) {
-    console.log("Mark done:", item)
-  }
 
   return (
     <section className={cn("flex flex-col gap-6", className)}>
@@ -117,27 +42,22 @@ export default function PendingTasksPage({
         </h1>
       </div>
 
-      <div className="flex flex-col gap-8">
-        <TaskSection
-          title="Patients waiting to be rematched"
-          items={patientsWaiting}
-          onView={handleView}
-          onDone={handleDone}
-        />
-
-        <TaskSection
-          title="Cancelled appointments refunds"
-          items={cancelledRefunds}
-          onView={handleView}
-          onDone={handleDone}
-        />
-
-        <TaskSection
-          title="Reports"
-          items={reports}
-          onView={handleView}
-          onDone={handleDone}
-        />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map((category) => (
+          <Link
+            key={category.title}
+            href={category.href}
+            className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
+          >
+            <Card className="h-full rounded-none border border-slate-200 bg-white px-6 py-5 text-sm font-medium text-slate-600 shadow-[0_18px_35px_-28px_rgba(15,23,42,0.45)] transition-shadow hover:shadow-[0_18px_38px_-20px_rgba(76,81,191,0.35)]">
+              <div className="flex h-full items-center justify-between gap-4">
+                <span className="truncate text-base font-normal text-slate-700">
+                  {category.title}
+                </span>
+              </div>
+            </Card>
+          </Link>
+        ))}
       </div>
     </section>
   )

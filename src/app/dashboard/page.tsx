@@ -19,7 +19,6 @@ import chart_data from "@/public/chart_data.svg";
 
 const quickLinks = [
   { title: "Accounts management", href: "/dashboard/account" },
-  { title: "Pending tasks", href: "/dashboard/tasks" },
   { title: "Patients on queue", href: "/dashboard/patients/queue" },
   { title: "Cancelled appointments", href: "/dashboard/appointments/cancelled" },
   { title: "User reports", href: "/dashboard/reports" },
