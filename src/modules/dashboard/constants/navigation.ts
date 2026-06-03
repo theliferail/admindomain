@@ -12,6 +12,7 @@ import {
   FlaskConical,
   Users,
   Pill,
+  Store,
 } from "lucide-react"
 
 export type SidebarNavItem = {
@@ -45,6 +46,12 @@ export const sidebarNavItems: SidebarNavItem[] = [
     href: "/dashboard/profile",
     label: "Profile",
     icon: User,
+  },
+  {
+    id: "add-business",
+    href: "/dashboard/add-business",
+    label: "Add Business",
+    icon: Store,
   },
 ]
 
