@@ -47,16 +47,16 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-[#f5f6fb] pb-20 lg:pb-0">
+    <div className="flex min-h-screen w-full flex-col bg-[#FFFFFF] pb-20 lg:pb-0">
       <div className="sticky top-0 z-50 hidden bg-white shadow-sm lg:block">
         <Header />
       </div>
 
       <div className="flex flex-1 flex-col gap-10 pb-14 pl-0 pr-0 pt-0 lg:flex-row lg:items-start lg:gap-[15px] lg:pb-12 lg:pr-10">
-        <div className="hidden lg:block lg:sticky lg:top-[70px] lg:self-start">
+        <div className="hidden lg:fixed lg:top-[70px] lg:left-0 lg:z-40 lg:block lg:h-[calc(100vh-70px)] lg:overflow-hidden">
           <Sidebar />
         </div>
-        <main className="flex-1">
+        <main className="flex-1 lg:ml-[260px]">
           <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-8 sm:px-6 md:px-8">
             <Banner userName={user ? `${user.firstName} ${user.lastName}` : undefined} />
             {children}
