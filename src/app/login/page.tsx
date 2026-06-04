@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 
 import { loginAction } from "@/actions/auth/loginAction";
@@ -11,6 +12,7 @@ import { Button } from "@shared/components/ui/button";
 import logo from "@public/logo.svg"
 
 export default function AdminLoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,7 +26,7 @@ export default function AdminLoginPage() {
     try {
       setIsSubmitting(true);
       await loginAction({ email, password });
-      window.location.href = "/dashboard";
+      router.push("/dashboard");
     } catch (submissionError) {
       setError(
         submissionError instanceof Error
