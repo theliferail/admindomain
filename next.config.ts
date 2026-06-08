@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+  reactStrictMode: true,
+  basePath: '/admin',
+  assetPrefix: '/admin',
+  poweredByHeader: false,
+  output: 'standalone',
 };
 
 export default nextConfig;
