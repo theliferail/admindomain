@@ -8,7 +8,7 @@ import AdminLayout from "@modules/dashboard/layout/AdminLayout";
 import { Input } from "@shared/components/ui/input";
 import { Button } from "@shared/components/ui/button";
 
-const businessTypes = ["Pharmacy", "Lab", "Doctor", "Hospital"] as const;
+const businessTypes = ["Pharmacy", "Lab", "Hospital"] as const;
 type BusinessType = (typeof businessTypes)[number];
 
 export default function AddBusinessPage() {
