@@ -7,8 +7,10 @@ import { ArrowLeft } from "lucide-react";
 import AdminLayout from "@modules/dashboard/layout/AdminLayout";
 import { Input } from "@shared/components/ui/input";
 import { Button } from "@shared/components/ui/button";
+import { toast } from "sonner";
+import { inviteOnboarding } from "@/actions/onboarding/invite";
 
-const businessTypes = ["Pharmacy", "Lab", "Doctor", "Hospital"] as const;
+const businessTypes = ["Pharmacy", "Lab", "Hospital"] as const;
 type BusinessType = (typeof businessTypes)[number];
 
 export default function AddBusinessPage() {
@@ -16,15 +18,28 @@ export default function AddBusinessPage() {
   const [businessType, setBusinessType] = useState<BusinessType | "">("");
   const [email, setEmail] = useState("");
   const [businessName, setBusinessName] = useState("");
+  const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleShare = async () => {
-    if (!businessType || !email.trim() || !businessName.trim()) return;
+    if (!businessType || !email.trim() || !businessName.trim() || !phone.trim()) return;
 
     setIsSubmitting(true);
     try {
-      // TODO: call API to share onboarding link
-      console.log("Sharing onboarding link:", { businessType, email, businessName });
+      const organizationType = businessType.toUpperCase() as "HOSPITAL" | "PHARMACY" | "LAB";
+      const result = await inviteOnboarding({
+        businessName: businessName.trim(),
+        businessEmail: email.trim(),
+        businessPhone: phone.trim(),
+        organizationType,
+      });
+      toast.success(result.message || "Onboarding link has been sent successfully!");
+      setEmail("");
+      setBusinessName("");
+      setPhone("");
+      setBusinessType("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setIsSubmitting(false);
     }
@@ -101,6 +116,22 @@ export default function AddBusinessPage() {
 
               <div className="space-y-2">
                 <label
+                  htmlFor="phone"
+                  className="text-sm font-medium text-slate-700"
+                >
+                  Phone Number
+                </label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="Enter business phone number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
                   htmlFor="business-name"
                   className="text-sm font-medium text-slate-700"
                 >
@@ -117,7 +148,7 @@ export default function AddBusinessPage() {
 
               <Button
                 onClick={handleShare}
-                disabled={isSubmitting || !email.trim() || !businessName.trim()}
+                disabled={isSubmitting || !email.trim() || !businessName.trim() || !phone.trim()}
                 className="w-full bg-[#1D4ED8] hover:bg-[#1D4ED8]/90"
               >
                 {isSubmitting ? "Sharing…" : "Share Onboarding Link"}
