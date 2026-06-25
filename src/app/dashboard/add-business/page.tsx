@@ -9,6 +9,8 @@ import { Input } from "@shared/components/ui/input";
 import { Button } from "@shared/components/ui/button";
 import { toast } from "sonner";
 import { inviteOnboarding } from "@/actions/onboarding/invite";
+import PendingInvitations from "@modules/dashboard/components/pages/Onboarding/PendingInvitations";
+import MyInvitations from "@modules/dashboard/components/pages/Onboarding/MyInvitations";
 
 const businessTypes = ["Pharmacy", "Lab", "Hospital"] as const;
 type BusinessType = (typeof businessTypes)[number];
@@ -156,6 +158,10 @@ export default function AddBusinessPage() {
             </>
           )}
         </div>
+
+        <PendingInvitations />
+
+        <MyInvitations />
       </section>
     </AdminLayout>
   );
