@@ -20,6 +20,8 @@ import {
   TableRow,
 } from "@shared/components/ui/table"
 import { cn } from "@shared/lib/utils"
+import BusinessDetailModal from "./BusinessDetailModal"
+import { toast } from "sonner"
 
 type TabKey = "HOSPITAL" | "PHARMACY" | "LAB"
 
@@ -62,6 +64,9 @@ export default function OnboardingPage() {
     [organizations, activeTab],
   )
 
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+
   const updateStatus = useCallback(
     (id: string, newStatus: OrganizationStatus) => {
       setOrganizations((prev) =>
@@ -70,6 +75,22 @@ export default function OnboardingPage() {
     },
     [],
   )
+
+  const handleStatusClick = useCallback((org: Organization) => {
+    const businessId =
+      org.type === "HOSPITAL"
+        ? org.hospitalId
+        : org.type === "PHARMACY"
+          ? org.pharmacyId
+          : org.labId
+
+    if (businessId) {
+      setSelectedOrgId(businessId)
+      setModalOpen(true)
+    } else {
+      toast.error(`No ${org.type.toLowerCase()} ID found for this organization.`)
+    }
+  }, [])
 
   return (
     <section className="flex flex-col gap-6">
@@ -171,12 +192,18 @@ export default function OnboardingPage() {
                     {org.phone}
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={cn("text-xs", statusStyles[org.status])}
+                    <button
+                      type="button"
+                      onClick={() => handleStatusClick(org)}
+                      className="cursor-pointer"
                     >
-                      {statusLabel[org.status]}
-                    </Badge>
+                      <Badge
+                        variant="outline"
+                        className={cn("text-xs hover:ring-2 hover:ring-[#1D4ED8]/30 transition-shadow", statusStyles[org.status])}
+                      >
+                        {statusLabel[org.status]}
+                      </Badge>
+                    </button>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center gap-2">
@@ -206,6 +233,19 @@ export default function OnboardingPage() {
           </TableBody>
         </Table>
       </div>
+      {selectedOrgId && (
+        <BusinessDetailModal
+          open={modalOpen}
+          onClose={() => {
+            setModalOpen(false)
+            setSelectedOrgId(null)
+          }}
+          businessId={selectedOrgId}
+          businessType={activeTab}
+          onApprove={(id) => updateStatus(id, "APPROVED")}
+          onReject={(id) => updateStatus(id, "REJECTED")}
+        />
+      )}
     </section>
   )
 }

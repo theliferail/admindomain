@@ -15,6 +15,9 @@ export type Organization = {
   status: OrganizationStatus;
   createdByUserId: string;
   adminUserId: string;
+  hospitalId?: string;
+  pharmacyId?: string;
+  labId?: string;
   createdAt: string;
   updatedAt: string;
 };
