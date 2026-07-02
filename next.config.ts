@@ -1,11 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  reactStrictMode: true,
-  basePath: '/admin',
-  assetPrefix: '/admin',
-  poweredByHeader: false,
-  output: 'standalone',
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
