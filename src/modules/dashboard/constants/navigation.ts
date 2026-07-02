@@ -2,6 +2,7 @@ import type { ComponentType, SVGProps } from "react"
 
 import {
   CalendarClock,
+  ClipboardCheck,
   ClipboardList,
   Home,
   Info,
@@ -52,6 +53,12 @@ export const sidebarNavItems: SidebarNavItem[] = [
     href: "/dashboard/add-business",
     label: "Add Business",
     icon: Store,
+  },
+  {
+    id: "onboarding",
+    href: "/dashboard/onboarding",
+    label: "Onboarding",
+    icon: ClipboardCheck,
   },
 ]
 
