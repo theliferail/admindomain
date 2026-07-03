@@ -29,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${montserrat.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
         <Toaster position="top-right" richColors />
