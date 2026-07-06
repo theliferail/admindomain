@@ -13,7 +13,7 @@ export type GetMyInvitationsResponse = {
 export async function fetchMyInvitations() {
   try {
     const { data } = await axiosInstance.get<GetMyInvitationsResponse>(
-      "/api/onboarding/invitations/my",
+      "/onboarding/invitations/my",
     );
 
     return data;

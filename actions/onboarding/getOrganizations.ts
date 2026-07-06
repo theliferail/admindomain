@@ -32,7 +32,7 @@ export type GetOrganizationsResponse = {
 export async function fetchOnboardingOrganizations() {
   try {
     const { data } = await axiosInstance.get<GetOrganizationsResponse>(
-      "/api/onboarding/organizations",
+      "/onboarding/organizations",
     );
 
     return data;
