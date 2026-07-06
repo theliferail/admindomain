@@ -31,7 +31,7 @@ export type InviteResponse = {
 export async function inviteOnboarding(payload: InvitePayload) {
   try {
     const { data } = await axiosInstance.post<InviteResponse>(
-      "/api/onboarding/invite",
+      "/onboarding/invite",
       payload,
     );
 

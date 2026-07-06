@@ -30,7 +30,7 @@ export type GetPendingInvitationsResponse = {
 export async function fetchPendingInvitations() {
   try {
     const { data } = await axiosInstance.get<GetPendingInvitationsResponse>(
-      "/api/onboarding/invitations/pending",
+      "/onboarding/invitations/pending",
     );
 
     return data;
