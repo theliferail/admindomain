@@ -96,12 +96,12 @@ export default function Totalusers({ users }: TotalUsersProps) {
           <Button
             type="button"
             variant="outline"
-            size="icon"
             onClick={() => router.back()}
             aria-label="Go back"
-            className="h-10 w-10 rounded-lg border-slate-200 text-[#042362] shadow-[0_10px_30px_-24px_rgba(9,84,235,0.5)] hover:bg-[#EEF2FF]"
+            className="flex items-center gap-2 px-4 py-2 text-base font-medium rounded-lg border-slate-200 text-[#042362] shadow-[0_10px_30px_-24px_rgba(9,84,235,0.5)] hover:bg-[#EEF2FF]"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5" />
+            Back
           </Button>
           <h2 className="text-xl font-semibold text-[#042362]">Total Users</h2>
         </div>
