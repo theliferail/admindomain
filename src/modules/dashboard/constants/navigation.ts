@@ -14,6 +14,7 @@ import {
   Users,
   Pill,
   Store,
+  Settings,
 } from "lucide-react"
 
 export type SidebarNavItem = {
@@ -60,12 +61,18 @@ export const sidebarNavItems: SidebarNavItem[] = [
     label: "Onboarding",
     icon: ClipboardCheck,
   },
+  {
+    id: "settings",
+    href: "/dashboard/settings",
+    label: "Settings",
+    icon: Settings,
+  },
 ]
 
 export const sidebarInfoItem: SidebarNavItem = {
   id: "info",
   href: "#",
-  label: "Info",
+  label: "Infomation mgt",
   icon: Info,
 }
 

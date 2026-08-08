@@ -16,7 +16,7 @@ const STATUS_STYLES: Record<string, string> = {
   PENDING_VERIFICATION: "bg-blue-100 text-blue-700",
 }
 
-export default function UserDetailPage() {
+export default function DoctorDetailPage() {
   const params = useParams()
   const router = useRouter()
   const id = params.id as string
@@ -31,7 +31,7 @@ export default function UserDetailPage() {
     fetchUserById(id)
       .then((response) => setUser(response.data))
       .catch((err) =>
-        setError(err instanceof Error ? err.message : "Failed to load user.")
+        setError(err instanceof Error ? err.message : "Failed to load doctor.")
       )
       .finally(() => setIsLoading(false))
   }, [id])
@@ -51,7 +51,7 @@ export default function UserDetailPage() {
 
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <span className="text-sm font-medium text-slate-500">Loading user details…</span>
+            <span className="text-sm font-medium text-slate-500">Loading doctor details…</span>
           </div>
         ) : error ? (
           <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600">
@@ -65,7 +65,7 @@ export default function UserDetailPage() {
                   <h1 className="text-2xl font-semibold text-[#042362]">
                     {user.firstName} {user.lastName}
                   </h1>
-                  <p className="mt-1 text-sm text-slate-500">{user.userType}</p>
+                  <p className="mt-1 text-sm text-slate-500">Doctor</p>
                 </div>
                 <span
                   className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLES[user.status] ?? "bg-slate-100 text-slate-600"}`}
