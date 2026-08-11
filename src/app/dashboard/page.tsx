@@ -110,7 +110,7 @@ export default function Home() {
       href: "/dashboard/hospital",
     },
     {
-      title: "Graph",
+      title: "Reports",
       description: "",
       image: chart_data,
       backgroundColor: "#F0F5F3",
