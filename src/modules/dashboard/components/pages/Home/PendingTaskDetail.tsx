@@ -20,6 +20,8 @@ export interface TaskSection {
 export interface PendingTaskDetailProps {
   heading: string
   sections: TaskSection[]
+  loading?: boolean
+  error?: string | null
   onView?: (item: TaskItem) => void
   className?: string
 }
@@ -53,6 +55,8 @@ function TaskCard({
 export default function PendingTaskDetail({
   heading,
   sections,
+  loading,
+  error,
   onView,
   className,
 }: PendingTaskDetailProps) {
@@ -75,7 +79,20 @@ export default function PendingTaskDetail({
       </div>
 
       <div className="flex flex-col gap-8">
-        {sections.map((section) => (
+        {loading ? (
+          <div className="rounded-lg border border-dashed border-[#DADBF7] bg-white py-12 text-center text-sm text-[#7A819F]">
+            Loading…
+          </div>
+        ) : error ? (
+          <div className="rounded-lg border border-dashed border-red-200 bg-red-50 py-12 text-center text-sm text-red-500">
+            {error}
+          </div>
+        ) : sections.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-[#DADBF7] bg-white py-12 text-center text-sm text-[#7A819F]">
+            No pending tasks found.
+          </div>
+        ) : (
+        sections.map((section) => (
           <div key={section.title} className="flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-[#2B2F4A]">
               {section.title}
@@ -96,7 +113,8 @@ export default function PendingTaskDetail({
               </div>
             )}
           </div>
-        ))}
+        ))
+        )}
       </div>
     </section>
   )
