@@ -18,6 +18,10 @@ export type Organization = {
   hospitalId?: string;
   pharmacyId?: string;
   labId?: string;
+  reviewedByUserId?: string;
+  reviewedByName?: string;
+  reviewedAt?: string;
+  declineReason?: string;
   createdAt: string;
   updatedAt: string;
 };
