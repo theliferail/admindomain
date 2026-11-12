@@ -9,6 +9,7 @@ import {
   type Organization,
   type OrganizationStatus,
 } from "@/actions/onboarding/getOrganizations"
+import { approveOrganization } from "@/actions/onboarding/approveOrganization"
 import { Badge } from "@shared/components/ui/badge"
 import { Button } from "@shared/components/ui/button"
 import {
@@ -64,8 +65,10 @@ export default function OnboardingPage() {
     [organizations, activeTab],
   )
 
-  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
+  const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null)
+  const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
+  const [actionOrgId, setActionOrgId] = useState<string | null>(null)
 
   const updateStatus = useCallback(
     (id: string, newStatus: OrganizationStatus) => {
@@ -76,6 +79,23 @@ export default function OnboardingPage() {
     [],
   )
 
+  const handleApprove = useCallback(async (org: Organization) => {
+    setActionOrgId(org.id)
+    try {
+      const res = await approveOrganization(org.id)
+      setOrganizations((prev) =>
+        prev.map((o) => (o.id === org.id ? { ...o, ...res.data } : o))
+      )
+      toast.success(res.message || `${org.name} approved successfully.`)
+      return true
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Unable to approve organization.")
+      return false
+    } finally {
+      setActionOrgId(null)
+    }
+  }, [])
+
   const handleStatusClick = useCallback((org: Organization) => {
     const businessId =
       org.type === "HOSPITAL"
@@ -85,7 +105,8 @@ export default function OnboardingPage() {
           : org.labId
 
     if (businessId) {
-      setSelectedOrgId(businessId)
+      setSelectedOrg(org)
+      setSelectedBusinessId(businessId)
       setModalOpen(true)
     } else {
       toast.error(`No ${org.type.toLowerCase()} ID found for this organization.`)
@@ -201,7 +222,7 @@ export default function OnboardingPage() {
                         variant="outline"
                         className={cn("text-xs hover:ring-2 hover:ring-[#1D4ED8]/30 transition-shadow", statusStyles[org.status])}
                       >
-                        {statusLabel[org.status]}
+                        {statusLabel[org.status] ?? org.status}
                       </Badge>
                     </button>
                   </TableCell>
@@ -209,8 +230,8 @@ export default function OnboardingPage() {
                     <div className="flex items-center justify-center gap-2">
                       <button
                         type="button"
-                        onClick={() => updateStatus(org.id, "APPROVED")}
-                        disabled={org.status === "APPROVED"}
+                        onClick={() => handleApprove(org)}
+                        disabled={org.status === "APPROVED" || actionOrgId === org.id}
                         aria-label={`Approve ${org.name}`}
                         className="rounded-md p-1.5 text-emerald-600 transition-colors hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40"
                       >
@@ -219,7 +240,7 @@ export default function OnboardingPage() {
                       <button
                         type="button"
                         onClick={() => updateStatus(org.id, "REJECTED")}
-                        disabled={org.status === "REJECTED"}
+                        disabled={org.status === "REJECTED" || actionOrgId === org.id}
                         aria-label={`Reject ${org.name}`}
                         className="rounded-md p-1.5 text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
                       >
@@ -233,17 +254,22 @@ export default function OnboardingPage() {
           </TableBody>
         </Table>
       </div>
-      {selectedOrgId && (
+      {selectedOrg && selectedBusinessId && (
         <BusinessDetailModal
           open={modalOpen}
           onClose={() => {
             setModalOpen(false)
-            setSelectedOrgId(null)
+            setSelectedOrg(null)
+            setSelectedBusinessId(null)
           }}
-          businessId={selectedOrgId}
-          businessType={activeTab}
-          onApprove={(id) => updateStatus(id, "APPROVED")}
-          onReject={(id) => updateStatus(id, "REJECTED")}
+          businessId={selectedBusinessId}
+          businessType={selectedOrg.type}
+          actionLoading={actionOrgId === selectedOrg.id}
+          onApprove={() => handleApprove(selectedOrg)}
+          onReject={() => {
+            updateStatus(selectedOrg.id, "REJECTED")
+            return true
+          }}
         />
       )}
     </section>

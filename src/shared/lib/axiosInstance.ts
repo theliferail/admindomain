@@ -1,6 +1,7 @@
 import axios, { AxiosHeaders, InternalAxiosRequestConfig } from "axios";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const DOCTOR_API_BASE_URL = process.env.NEXT_PUBLIC_DOCTOR_API_BASE_URL;
 export const ACCESS_TOKEN_STORAGE_KEY = "liferail_admin_token";
 export const ACCESS_TOKEN_COOKIE_KEY = "liferail_admin_token";
 
@@ -36,39 +37,49 @@ export const clearAccessToken = () => setAccessToken(null);
 
 export const getAccessToken = () => inMemoryToken ?? getStoredToken();
 
-export const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
-});
+const createApiClient = (baseURL: string | undefined) => {
+  const instance = axios.create({
+    baseURL,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
 
-axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const token = getAccessToken();
+  instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+    const token = getAccessToken();
 
-  if (token) {
-    const headers =
-      config.headers instanceof AxiosHeaders
-        ? config.headers
-        : new AxiosHeaders(config.headers);
+    if (token) {
+      const headers =
+        config.headers instanceof AxiosHeaders
+          ? config.headers
+          : new AxiosHeaders(config.headers);
 
-    headers.set("Authorization", `Bearer ${token}`);
-    config.headers = headers;
-  }
-
-  return config;
-});
-
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      clearAccessToken();
+      headers.set("Authorization", `Bearer ${token}`);
+      config.headers = headers;
     }
 
-    return Promise.reject(error);
-  },
-);
+    return config;
+  });
+
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401) {
+        clearAccessToken();
+      }
+
+      return Promise.reject(error);
+    },
+  );
+
+  return instance;
+};
+
+/** RBAC service: auth, users, onboarding, hospitals, pharmacies, labs. */
+export const axiosInstance = createApiClient(API_BASE_URL);
+
+/** Doctor service: doctor profiles and admin approve/reject. */
+export const doctorAxiosInstance = createApiClient(DOCTOR_API_BASE_URL);
 
 export default axiosInstance;

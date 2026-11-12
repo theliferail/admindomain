@@ -24,8 +24,10 @@ type Props = {
   onClose: () => void
   businessId: string
   businessType: BusinessType
-  onApprove: (id: string) => void
-  onReject: (id: string) => void
+  actionLoading?: boolean
+  /** Resolve to true on success to close the modal. */
+  onApprove: () => boolean | Promise<boolean>
+  onReject: () => boolean | Promise<boolean>
 }
 
 type FieldRow = { label: string; value: string | number | boolean | undefined }
@@ -237,6 +239,7 @@ export default function BusinessDetailModal({
   onClose,
   businessId,
   businessType,
+  actionLoading = false,
   onApprove,
   onReject,
 }: Props) {
@@ -389,20 +392,20 @@ export default function BusinessDetailModal({
         {detail && (
           <div className="flex items-center gap-3 border-t border-slate-200 px-6 py-4">
             <Button
-              onClick={() => {
-                onApprove(businessId)
-                onClose()
+              onClick={async () => {
+                if (await onApprove()) onClose()
               }}
+              disabled={actionLoading}
               className="flex-1 bg-emerald-600 text-white hover:bg-emerald-700"
             >
               <CheckCircle className="mr-2 h-4 w-4" />
-              Approve
+              {actionLoading ? "Approving…" : "Approve"}
             </Button>
             <Button
-              onClick={() => {
-                onReject(businessId)
-                onClose()
+              onClick={async () => {
+                if (await onReject()) onClose()
               }}
+              disabled={actionLoading}
               variant="outline"
               className="flex-1 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
             >
